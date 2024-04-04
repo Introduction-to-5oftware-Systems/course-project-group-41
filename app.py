@@ -101,7 +101,7 @@ def upload_images():
     for file in files:
         if file.filename == '':
             return 'No selected file', 400
-        db_connector = psycopg2.connect("postgresql://QES:WoPH1gwM3_JGB4Zkcovy9w@iss-group-41-4102.7s5.aws-ap-south-1.cockroachlabs.cloud:26257/issproject?sslmode=verify-full")
+        db_connector = psycopg2.connect(sql_link)
         user_db = db_connector.cursor()
         query = "UPDATE user_details SET user_images = user_images + 1 WHERE username = %s"
         user_db.execute(query, (current_user,))
@@ -157,7 +157,7 @@ def login():
         # password = data.get('password')
         # password_from_database="test"
         #ask question
-        db_connector = psycopg2.connect("postgresql://QES:WoPH1gwM3_JGB4Zkcovy9w@iss-group-41-4102.7s5.aws-ap-south-1.cockroachlabs.cloud:26257/issproject?sslmode=verify-full")
+        db_connector = psycopg2.connect(sql_link)
 
         user_db = db_connector.cursor()
         query = "SELECT * FROM user_details WHERE username = %s"
@@ -210,7 +210,7 @@ def logout():
 @jwt_required()
 def upload():
     current_user = get_jwt_identity()
-    # db_connector = psycopg2.connect("postgresql://QES:WoPH1gwM3_JGB4Zkcovy9w@iss-group-41-4102.7s5.aws-ap-south-1.cockroachlabs.cloud:26257/issproject?sslmode=verify-full")
+    # db_connector = psycopg2.connect(sql_link)
     # user_db = db_connector.cursor()    
     # query = "UPDATE user_details SET user_images = user_images + 1 WHERE username = %s"
     # user_db.execute(query, (current_user,))
@@ -240,7 +240,7 @@ def video():
         os.remove(output_video_file)
 
     # Connect to the database
-    db_connector = psycopg2.connect("postgresql://QES:WoPH1gwM3_JGB4Zkcovy9w@iss-group-41-4102.7s5.aws-ap-south-1.cockroachlabs.cloud:26257/issproject?sslmode=verify-full")
+    db_connector = psycopg2.connect(sql_link)
     user_db = db_connector.cursor()    
 
     # Fetch user images count
@@ -283,7 +283,7 @@ def video():
 def admin():
     current_user = get_jwt_identity()
     if (current_user == "adminuser"):
-        db_connector = psycopg2.connect("postgresql://QES:WoPH1gwM3_JGB4Zkcovy9w@iss-group-41-4102.7s5.aws-ap-south-1.cockroachlabs.cloud:26257/issproject?sslmode=verify-full")
+        db_connector = psycopg2.connect(sql_link)
         user_db = db_connector.cursor()    
         query = "SELECT user_id, username, email, user_images FROM user_details;"
         user_db.execute(query)
